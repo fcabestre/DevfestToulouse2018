@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>La programmation fonctionelle sans céder à la mode</title>
+
+    <meta name="description" content="">
+    <meta name="author" content="Frédéric Cabestre">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="myAssets/css/transparents.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>La <span class="green">programmation fonctionnelle</span></h1>
+            <h1>sans céder à la mode</h1>
+        </section>
+
+        <section>
+            <div style="display: flex; justify-content: space-between">
+                <div style="margin-left: 2em; display: flex; flex-direction: column">
+                    <div style="margin-top: 1em; text-align: left" class="green">Frédéric Cabestre</div>
+                    <div style="font-size: smaller; text-align: left" class="blue">@fcabestre</div>
+                </div>
+                <div style="margin-right: 2em; margin-top: 1em; align-self: center"><img src="myAssets/images/easymile.png"></div>
+            </div>
+            <div style="margin-top: 1em; margin-bottom: 100%; display: flex; flex-direction: row; justify-content: center" >
+                <img class="fragment" src="myAssets/images/ez10.png">
+                <img class="fragment" style="margin-right: 10vw; margin-left: 8vw; margin-top: 58px; margin-bottom: 0; object-fit: contain" src="myAssets/images/TractEasy.png">
+            </div>
+        </section>
+
+        <section>
+            <h2>Histoire</h2>
+            <blockquote style="margin-top: 10em; margin-bottom: 100%">
+                Le présent, sans passé, n'a pas d'avenir
+                <div style="margin-top: 1em">&mdash; Fernand Braudel</div>
+            </blockquote>
+        </section>
+
+        <section style="margin-bottom: 100%">
+            <div style="margin-bottom: 100%; margin-top: 3em; display: grid; grid-template-columns: auto auto auto; grid-template-rows: auto auto">
+                <div>
+                    <div style="grid-column: 2; grid-row: 1">
+                        <img src="myAssets/images/alan_turing_2.jpg" alt="">
+                    </div>
+                    <div  class="fragment" style="grid-column: 2; grid-row: 2">Alan Turing</div>
+                </div>
+                <div>
+                    <div style="grid-column: 3; grid-row: 1">
+                        <img src="myAssets/images/JohnvonNeumann-LosAlamos_2.gif" alt="">
+                    </div>
+                    <div class="fragment" style="grid-column: 3; grid-row: 2">John von Neumann</div>
+                </div>
+                <div>
+                    <div style="grid-column: 1; grid-row: 1">
+                        <img src="myAssets/images/Alonzo_Church_2.jpg" alt="">
+                    </div>
+                    <div class="fragment" style="grid-column: 1; grid-row: 2">Alonzo Church</div>
+                </div>
+            </div>
+
+            <aside class="notes">
+                <ul>
+                    <li>Courant années 30</li>
+                    <li>Calculabilité mécanique</li>
+                    <li>Turing : machine & problème de l'arrêt (1936)</li>
+                    <li>Von Neumann (origine hongroise) : architecture (1945)</li>
+                    <li>Church : λ-calcul (avant Turing !)</li>
+                    <li>Turing rejoint l'équipe de Church pour une thése à Princeton (1936)</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section style="margin-bottom: 100%">
+            <div style="margin-bottom: 100%; margin-top: 3em; display: grid; grid-template-columns: auto auto auto; grid-template-rows: auto auto">
+                <div style="padding-left: 1em">
+                    <div style="grid-column: 1; grid-row: 1">
+                        <img src="myAssets/images/john-mccarthy.png" alt="">
+                    </div>
+                    <div class="fragment" style="grid-column: 1; grid-row: 2">John MacCarthy</div>
+                </div>
+                <div class="fragment">
+                    <div style="grid-column: 2; grid-row: 1/2">
+                        <img style="border: thin solid" src="myAssets/images/Lisp.png" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <aside class="notes">
+                <ul>
+                    <li>Pionier de l'IA (on lui doit le terme)</li>
+                    <li>Co-inventeur des systèmes à temps partagé</li>
+                    <li>1956 : Algorithme Alpha-Béta</li>
+                    <li>1958 : Lisp</li>
+                    <li>Premier langage fonctionnel</li>
+                    <li>Second langage après FORTRAN (1954)</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <img style="margin-bottom: 100%; margin-top:3em; border: thin solid" src="myAssets/images/BackusTuringAward_2.png" alt="">
+
+            <aside class="notes">
+                <ul>
+                    <li>Créateur de FORTRAN et de la notation BNF</li>
+                    <li>Prix Turing 1977</li>
+                    <li>Exposé supériorité fonctionnel sur modèles Turing et von Neumann</li>
+                    <li>Relance l'intérêt pour les langages fonctionnels</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <div style="margin-bottom: 100%; margin-top: 3em; display: grid; grid-template-columns: auto auto auto; grid-template-rows: auto auto">
+                <div style="padding-left: 3em">
+                    <div style="grid-column: 1; grid-row: 1">
+                        <img src="myAssets/images/hughes.png" alt="">
+                    </div>
+                    <div class="fragment" style="grid-column: 1; grid-row: 2">John Hughes</div>
+                </div>
+                <div class="fragment">
+                    <div style="grid-column: 2; grid-row: 1/2">
+                        <img style="border: thin solid" src="myAssets/images/WhyFPMatters.png" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <aside class="notes">
+                <ul>
+                    <li>Suédois</li>
+                    <li>Spécialiste fonctionnel</li>
+                    <li>Contributions à Haskell</li>
+                    <li>Mémo de l'université Chalmers (1984)</li>
+                    <li>Plusieurs fois remanié</li>
+                    <li>Modularité avancée grâce fonctions d'ordre supérieures et à la paresse</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Retard à l'allumage</h2>
+            <blockquote style="margin-top: 10em; margin-bottom: 100%">
+                S'il n'y a pas de solution c'est qu'il n'y a pas de problème
+                <div style="margin-top: 1em">&mdash; Proverbe Shadock</div>
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>Von Neumann Style</h2>
+            <div style="margin-top: 1.6em; margin-bottom: 100%" data-svg-fragment="myAssets/images/VonNeumann.svg#[*|label=base]">
+                <a class="fragment" title="[*|label=frag1]"></a>
+            </div>
+
+            <aside class="notes">
+                <ul>
+                    <li>Backus : bus = von Neumann bottleneck</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Fossé Sémantique</h2>
+            <div style="margin-top: 1.6em; margin-bottom: 100%" data-svg-fragment="myAssets/images/semantique.svg#[*|label=base]">
+                <a class="fragment" title="[*|label=frag0]"></a>
+                <a class="fragment" title="[*|label=frag1]"></a>
+                <a class="fragment" title="[*|label=frag2]"></a>
+                <a class="fragment" title="[*|label=frag3]"></a>
+                <a class="fragment" title="[*|label=frag4]"></a>
+                <a class="fragment" title="[*|label=frag5]"></a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Fossé Sémantique</h2>
+            <div style="margin-top: 1.6em; margin-bottom: 100%" data-svg-fragment="myAssets/images/semantique-2.svg#[*|label=base]"></div>
+        </section>
+
+        <section>
+            <h2>Architectures dédiées</h2>
+            <div style="margin-bottom: 100%; margin-top: 0.6em; display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto">
+                <div class="fragment">
+                    <div style="grid-column: 1; grid-row: 1">
+                        <img src="myAssets/images/Arvind1.png">
+                    </div>
+
+                    <div style="grid-column: 1; grid-row: 2">
+                        <img src="myAssets/images/Arvind2.png">
+                    </div>
+                </div>
+                <div class="fragment" style="padding-right: 10vw; grid-column: 2; grid-row: 1 / span 2">
+                    <img src="myAssets/images/LispMachine.jpg">
+                </div>
+            </div>
+            <ul style="margin-top: 1.6em; margin-bottom: 100%">
+                <li>Architectures Dataflow</li>
+                <li>Machines Lisp</li>
+            </ul>
+
+            <aside class="notes">
+                <ul>
+                    <li>Architectures Dataflow 1970-80</li>
+                    <li>Lisp machines courant 1970</li>
+                    <li>Projets cinquième génération</li>
+                    <li>Même une conçue à Paul Sabatier</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Penser différemment</h2>
+            <img style="border: thin solid" src="myAssets/images/okasaki.png" alt="Okasaki">
+
+            <aside class="notes">
+                <ul>
+                    <li>Souvent décrié à cause performances</li>
+                    <li>Nécéssite penser différemment</li>
+                    <li>Concepts qui percollent (GC, lambda)</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Programmer avec des fonctions</h2>
+            <blockquote style="margin-top: 10em; margin-bottom: 100%">
+                <span style="font-weight: bolder">functĭo</span>, ōnis, f. (fungor), accomplissement, exécution
+                <div style="margin-top: 1em">&mdash; Dictionnaire Gaffiot</div>
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>Fonction</h2>
+            <div style="margin-top: 1.6em; margin-bottom: 100%" data-svg-fragment="myAssets/images/fonction2.svg#[*|label=base]">
+                <a class="fragment" title="[*|label=frag1]"></a>
+                <a class="fragment" title="[*|label=frag2]"></a>
+                <a class="fragment" title="[*|label=frag5]"></a>
+                <a class="fragment" title="[*|label=frag6]"></a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Transparence référentielle & pureté</h2>
+            <blockquote style="margin-top: 2.6em; text-align: justify">
+                Une expression <span class="orange" style="font-style: oblique">$\mathcal{e}$</span> est référentiellement transparente si
+                du point de vue d'un programme <span class="orange">$\mathcal{P}$</span>, toute occurence de <span class="orange" style="font-style: oblique">$\mathcal{e}$</span>
+                peut être remplacée par le résultat de son évaluation sans changer le sens de <span class="orange">$\mathcal{P}$</span>
+            </blockquote>
+
+            <blockquote class="fragment" style="margin-bottom: 100%; margin-top: 1.4em; text-align: justify">
+                Une fonction <span class="orange" style="font-style: oblique">$\mathcal{f}$</span> est pure si <span class="orange" style="font-style: oblique">$\mathcal{f(e)}$</span> est référentiellement transparente pour tout <span class="orange" style="font-style: oblique">$\mathcal{e}$</span> référentiellement transparent
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>Quizz</h2>
+            <pre style="font-size: 0.70em; margin-top: 1.8em; margin-bottom: 100%"><code class="java" style="max-height: 800px;">
+
+    public static int[] insertionSort(int array[]) {
+        int n = array.length;
+        int[] result = new int[n];
+        for (int j = 0; j < n; j++) {
+            int key = array[j];
+            int i = j-1;
+            while ( (i > -1) && ( result[i] > key ) ) {
+                result [i+1] = result[i];
+                i--;
+            }
+            result[i+1] = key;
+        }
+        return result;
+    }
+            </code></pre>
+        </section>
+
+
+        <section>
+            <h2>Quizz</h2>
+            <pre style="font-size: 0.70em; margin-top: 1.8em; margin-bottom: 100%"><code class="java" style="max-height: 800px;">
+
+    public static int[] insertionSort(int array[]) {
+        int n = array.length;
+        for (int j = 0; j < n; j++) {
+            int key = array[j];
+            int i = j-1;
+            while ( (i > -1) && ( array[i] > key ) ) {
+                array [i+1] = array[i];
+                i--;
+            }
+            array[i+1] = key;
+        }
+        return array;
+    }
+
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Quizz</h2>
+            <pre style="font-size: 0.70em; margin-top: 1.6em"><code class="java" style="max-height: 800px;">
+        /* Java Integer */ static int parseInt(String s)
+            </code></pre>
+
+            <pre class="fragment" style="font-size: 0.70em; margin-top: 0.2em; margin-bottom: 100%"><code class="java" style="max-height: 800px;">
+        int fortyTwo;
+        try {
+            fortyTwo = Integer.parseInt("Meh!");
+            fortyTwo += 5;
+        }
+        catch (NumberFormatException e) {
+            fortyTwo = 42;
+        }
+        assertEquals(42, fortyTwo);
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Quizz</h2>
+            <pre style="font-size: 0.70em; margin-top: 1.6em"><code class="java" style="max-height: 800px;">
+        /* Java Integer */ static int parseInt(String s)
+            </code></pre>
+
+            <pre style="font-size: 0.70em; margin-top: 0.2em; margin-bottom: 100%"><code class="java" style="max-height: 800px;">
+        int fortyTwo = Integer.parseInt("Meh!");
+        try {
+            fortyTwo += 5;
+        }
+        catch (NumberFormatException e) {
+            fortyTwo = 42;
+        }
+        assertEquals(42, fortyTwo);
+            </code></pre>
+
+            <aside class="notes">
+                <ul>
+                    <li>DateTime.now()</li>
+                    <li>Random.netxInt()</li>
+                    <li>Écriture disque, écran, réseau....</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Bénéfices</h2>
+            <ul style="padding-left: 2em">
+                <li class="fragment" style="font-size: larger; margin-top: 2.5em"><span class="orange">Modularité</span> et <span class="orange">composition</span></li>
+                <li class="fragment" style="font-size: larger; margin-top: 2em">Raisonnement <span class="orange">local</span> et <span class="orange">équationnel</span></li>
+                <li class="fragment" style="font-size: larger; margin-top: 2em"><span class="orange">Testabilité</span> et « <span class="orange">refactoring</span> »</li>
+            </ul>
+
+            <aside class="notes">
+                <ul>
+                    <li>Mais attention pas d'angélisme</li>
+                    <li>Nécessite penser différemment</li>
+                    <li>Nécessite nouvelles constructions</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Exemples : Combinateurs</h2>
+            <blockquote style="margin-top: 9em; margin-bottom: 100%">
+                Bien mal acquis ne profite jamais <div>à celui qui n'était pas dans la combine.</div>
+                <div style="margin-top: 1em">&mdash; Pierre Perret</div>
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>Codage de Church</h2>
+            <ul style="margin-top: 1.4em">
+                <li>Représentation des entiers naturels</li>
+                <li class="fragment" style="padding-left: 1em; margin-top: 1em">$0 \equiv \lambda f. \lambda x . x$</li>
+                <li class="fragment" style="padding-left: 1em">$1 \equiv \lambda f. \lambda x . f(x)$</li>
+                <li class="fragment" style="padding-left: 1em">$2 \equiv \lambda f. \lambda x . f(f(x))$</li>
+                <div class="fragment">
+                    <li style="padding-left: 1em">$\ldots$</li>
+                    <li style="padding-left: 1em">$n \equiv \lambda f. \lambda x . f^{n}(x)$</li>
+                </div>
+                <div class="fragment" style="; margin-top: 1em">
+                    <li>Définition de l'addition</li>
+                    <li style="padding-left: 1em; margin-top: 0.6em">$plus \equiv \lambda m. \lambda n. \lambda f. \lambda x . m f (n f x)$</li>
+                </div>
+            </ul>
+
+            <aside class="notes">
+                <ul>
+                    <li>Exemple scolaire</li>
+                    <li>En λ-calcul tout est fonction</li>
+                    <li>Pas de types de base (atomes, chaînes, nombres)</li>
+                    <li>Codage pour les entiers</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Codage de Church</h2>
+            <ul style="margin-top: 1.4em">
+                <li style="margin-top: 0.6em">Exemple de réduction</li>
+                <li style="padding-left: 1em; margin-top: 0.6em">$plus \: 1 \: 2$</li>
+                <li class="fragment" style="padding-left: 1em; margin-top: 0.6em">$\triangleright \: $<span class="green">$\lambda m. \lambda n. \lambda f. \lambda x . m f (n f x)$</span>$ \: 1 \: 2$</li>
+                <li class="fragment" style="padding-left: 1em">$\triangleright \: \lambda f. \lambda x . $<span class="orange">$1$</span>$  \:f  \: ($<span class="orange">$2$</span>$  \: f  \: x)$</li>
+                <li class="fragment" style="padding-left: 1em">$\triangleright \: \lambda f. \lambda x . $<span class="green">$(\lambda f'.\lambda x'.f'(x'))$</span>$  \:f  \:(2  \:f  \: x)$</li>
+                <li class="fragment" style="padding-left: 1em">$\triangleright \: \lambda f. \lambda x . $<span class="orange">$f  \: (2  \: f \: x)$</span></li>
+                <li class="fragment" style="padding-left: 1em">$\triangleright \: \lambda f. \lambda x . f ($<span class="green">$\lambda f''. \lambda x'' . f''(f''(x''))$</span>$ \: f \: x)$</li>
+                <li class="fragment" style="padding-left: 1em; margin-top: 0.6em">$\triangleright \: \lambda f. \lambda x . f ($<span class="orange">$f(f(x))$</span>$)$<span class="fragment">$ \: \equiv \: 3$</span> </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Ensembles</h2>
+            <pre class="fragment" style="font-size: 0.70em; margin-top: 1.8em"><code class="haskell" style="max-height: 800px;">
+        type Set e = e -> Bool
+            </code></pre>
+
+            <pre class="fragment" style="font-size: 0.70em; margin-top: 0.8em; margin-bottom: 100%"><code class="haskell" style="max-height: 800px;">
+        empty :: Set e
+        empty = \e -> False
+
+        single :: (Ord e) => e -> Set e
+        single v = \e -> v == e
+
+        range :: (Ord e) => e -> e -> Set e
+        range x y = \e -> e >= x && e <= y
+
+            </code></pre>
+
+            <aside class="notes">
+                <ul>
+                    <li>Habitude : ensemble structure de donnée</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Ensembles</h2>
+            <pre class="fragment" style="font-size: 0.70em; margin-top: 1.8em"><code class="haskell" style="max-height: 800px;">
+        union :: Set e -> Set e -> Set e
+        union s1 s2 = \e -> (s1 e || s2 e)
+
+        inter :: Set e -> Set e -> Set e
+        inter s1 s2 = \e -> (s1 e && s2 e)
+            </code></pre>
+
+            <pre class="fragment" style="font-size: 0.70em; margin-top: 0.8em"><code class="haskell" style="max-height: 800px;">
+        enum :: (Ord e) => [e] -> Set e
+        enum v = \e -> any (== e) v
+            </code></pre>
+
+            <pre class="fragment" style="font-size: 0.70em; margin-bottom: 100%; margin-top: 0.8em"><code class="haskell" style="max-height: 800px;">
+        enum :: (Ord e) => [e] -> Set e
+        enum l = foldr (union . single) empty l
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Ensembles</h2>
+            <pre class="fragment" style="font-size: 0.70em; margin-bottom: 100%; margin-top: 1.8em"><code class="haskell" style="max-height: 800px;">
+    *Main> let s = inter (enum (take 20 fibonacci)) (range 50 1000)
+
+    *Main> s 5
+    False
+
+    *Main> s 89
+    True
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Digression : Typage</h2>
+            <blockquote style="margin-top: 10em; margin-bottom: 100%">
+                Le prix s'oublie. la qualité reste.
+                <div style="margin-top: 1em">&mdash; Les Tontons flingueurs, Michel Audiard</div>
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>Digression : Typage</h2>
+            <div style="margin-top: 1.6em; margin-bottom: 100%" data-svg-fragment="myAssets/images/typage2.svg#[*|label=base]">
+                <a class="fragment" title="[*|label=frag1]"></a>
+                <a class="fragment" title="[*|label=frag2]"></a>
+                <a class="fragment" title="[*|label=frag3]"></a>
+            </div>
+
+            <aside class="notes">
+                <ul>
+                    <li>Crash Ariane 5</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Digression : Typage</h2>
+            <ul style="margin-top: 3em; margin-bottom: 0">
+                <li class="fragment">Exemple : <span class="orange">Types dépendants</span> (Idris, Agda, ...)</li>
+            </ul>
+            <pre class="fragment" style="margin-top: 2em; margin-bottom: 100%; font-size: 0.70em"><code class="Idris" style="max-height: 800px;">
+            insertionSort : Vect n elem -> Vect n elem
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Exemples : Motifs</h2>
+            <blockquote style="margin-top: 10em; margin-bottom: 100%">
+                La forme, c'est le fond qui remonte à la surface
+                <div style="margin-top: 1em">&mdash; Victor Hugo</div>
+            </blockquote>
+        </section>
+
+        <section>
+            <div style="margin-top: 8em; margin-bottom: 100%" >
+                <a href="https://github.com/fcabestre/DevfestToulouse2018/tree/master/code">Talk is cheap. Show me the code.</a>
+            </div>
+        </section>
+
+        <section>
+            <img src="myAssets/images/GangOfFour.jpg" alt="Gang Of Four">
+
+            <aside class="notes">
+                <ul>
+                    <li>Publication 1994</li>
+                    <li>Visitor, Flyweight, Strategy...</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Design Patterns</h2>
+            <div style="margin-top: 1.6em; margin-bottom: 100%" data-svg-fragment="myAssets/images/patterns.svg#[*|label=base]">
+                <a class="fragment" title="[*|label=frag0]"></a>
+                <a class="fragment" title="[*|label=frag1]"></a>
+                <a class="fragment" title="[*|label=frag2]"></a>
+                <a class="fragment" title="[*|label=frag3]"></a>
+                <a class="fragment" title="[*|label=frag4]"></a>
+                <a class="fragment" title="[*|label=frag5]"></a>
+                <a class="fragment" title="[*|label=frag6]"></a>
+                <a class="fragment" title="[*|label=frag7]"></a>
+                <a class="fragment" title="[*|label=frag8]"></a>
+                <a class="fragment" title="[*|label=frag9]"></a>
+                <a class="fragment" title="[*|label=frag10]"></a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Ressources</h2>
+            <ul style="margin-top: 3em">
+                <li class="fragment">Escape from the ivory tower: the Haskell journey<a href="https://youtu.be/re96UgMk6GQ"> [Vidéo]</a></li>
+                <li class="fragment">Why functional programing matters<a href="https://youtu.be/XrNdvWqxBvA"> [Vidéo]</a></li>
+                <li class="fragment" style="margin-top: 0.4em">A History of Haskell: Being Lazy with Class<a href="http://haskell.cs.yale.edu/wp-content/uploads/2011/02/history.pdf"> [PDF]</a></li>
+                <li class="fragment">Monads For Functional Programming<a href="http://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf"> [PDF]</a></li>
+                <li class="fragment">Can Programming Be Liberated from the von Neumann Style?<a href="http://worrydream.com/refs/Backus-CanProgrammingBeLiberated.pdf"> [PDF]</a></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Ressources</h2>
+            <div style="margin-bottom: 100%; margin-top: 1em; display: grid; grid-template-columns: auto auto; grid-template-rows: auto">
+                <div style=" padding-left: 8vw; grid-column: 1; grid-row: 1">
+                    <img style="border: thin solid" src="myAssets/images/fpInScala.jpg" alt="Functional Programming in Scala">
+                </div>
+                <div class="fragment" style="grid-column: 2; grid-row: 1; padding-right: 8vw">
+                    <img style="border: thin solid" src="myAssets/images/Brady-TDDI-HI.png" alt="Functional Programming in Scala">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Conclusion</h2>
+            <blockquote style="margin-bottom: 100%; margin-top: 3em">
+                A programming language that doesn't change the way <div>you think <span class="orange">is not worth learning</span>.</div>
+                <div style="margin-top: 0.6em">&mdash; Alan Perlis, Epigrams in Programming</div>
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>Conclusion</h2>
+            <blockquote style="margin-bottom: 100%; margin-top: 3em">
+                It is not only the violin that shapes the violinist, we are all shaped
+                <div>by the tools we train ourselves to use, and in this respect programming languages have a devious influence:</div>
+                <div><span class="orange">they shape our thinking habits</span>.</div>
+                <div style="margin-top: 0.6em">&mdash; Edsger W. Dijkstra</div>
+            </blockquote>
+
+            <aside class="notes">
+                <ul>
+                    <li>Lettre au membres du conseil de l'université du Texas à Austin</li>
+                    <li>12 April 2001</li>
+                    <li>Remplacement de Haskell par Java</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <div style="display: flex; justify-content: space-between">
+                <div style="; margin-left: 2em; display: flex; flex-direction: column">
+                    <div style="margin-top: 1em; text-align: left" class="green">Frédéric Cabestre</div>
+                    <div style="font-size: smaller; text-align: left" class="blue">@fcabestre</div>
+                </div>
+                <div style="margin-top: 1em; margin-right: 2em; align-self: center"><img src="myAssets/images/easymile.png"></div>
+            </div>
+            <h1 style="margin-top: 1em ; margin-bottom: 100%">Merci</h1>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+<script src="myAssets/js/d3.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: false,
+        progress: false,
+        history: true,
+        center: true,
+        width: 1600,
+        height: 900,
+
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+
+        math: {
+            mathjax: 'myAssets/js/MathJax.js',
+            config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+        },
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {src: 'plugin/math/math.js', async: true},
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                d3: 'myAssets/js/d3.min.js',
+                src: 'myAssets/js/reveal-svg-fragment.js', condition: function () {
+                return !!document.querySelector('[data-svg-fragment]');
+            }
+            }
+        ]
+    });
+
+</script>
+
+</body>
+</html>

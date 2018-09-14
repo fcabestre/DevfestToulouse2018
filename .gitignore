@@ -4,3 +4,7 @@ node_modules
 *~
 #*
 .env
+out/
+/code/Haskell/.stack-work/
+/code/Scala/target/
+/code/Scala/project/
